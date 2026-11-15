@@ -1,3 +1,3 @@
 class NotificationManager:
-    #This class is responsible for sending notifications with the deal flight details.
+    """Will send notifications with the deal details. Not implemented yet."""
     pass

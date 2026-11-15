@@ -1,28 +1,20 @@
-#This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.
-
 from pprint import pprint
-from dotenv import *
-import os
-import requests
-load_dotenv()
-from data_manager import DataManager
 
-data_manager_obj = DataManager()
-sheet_data = data_manager_obj.get_response_data()
+from data_manager import DataManager
+from flight_search import FlightSearch
+
+data_manager = DataManager()
+sheet_data = data_manager.get_response_data()
 pprint(sheet_data)
 
-
-
-if sheet_data[0]["iataCode"] == "":
-    from flight_search import FlightSearch
+# Fill in the IATA code for every row that does not have one yet.
+# Rows are only updated when a real code was found, so the sheet is never overwritten with placeholders.
+if sheet_data and sheet_data[0]["iataCode"] == "":
     flight_search = FlightSearch()
     for row in sheet_data:
-        row["iataCode"] = flight_search.get_destination_code(row["city"])
+        code = flight_search.get_destination_code(row["city"])
+        if code:
+            row["iataCode"] = code
 
-
-
-    data_manager_obj.destination_data = sheet_data
-    data_manager_obj.update_iata_code()
-
-
-
+    data_manager.destination_data = sheet_data
+    data_manager.update_iata_code()
