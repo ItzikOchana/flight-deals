@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 
 import requests
 from dotenv import load_dotenv
@@ -18,7 +17,6 @@ headers = {
 
 
 class DataManager:
-    """Reads the flight prices sheet (Sheety) and writes back the IATA codes."""
 
     def __init__(self):
         self.auth = headers
@@ -34,7 +32,7 @@ class DataManager:
     def update_iata_code(self):
         for row in self.destination_data:
             if not row["iataCode"]:
-                continue
+                continue  # nothing to update for this row
             new_data = {
                 "price": {
                     "iataCode": row["iataCode"]
@@ -42,5 +40,3 @@ class DataManager:
             }
             response = requests.put(url=f"{SHEET_URL}/{row['id']}", headers=self.auth, json=new_data)
             response.raise_for_status()
-
-        pprint(self.destination_data)

@@ -1,3 +1,3 @@
 class NotificationManager:
-    """Will send notifications with the deal details. Not implemented yet."""
+    # not done yet
     pass
